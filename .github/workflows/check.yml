@@ -1,0 +1,98 @@
+name: Check examples
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  node:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        directory:
+          - languages/javascript-playwright
+          - languages/typescript-puppeteer
+          - agents/playwright-cli
+          - agents/openai-agents
+          - mcp/playwright
+          - mcp/chrome-devtools
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: ${{ matrix.directory }}/package-lock.json
+      - run: npm ci
+        working-directory: ${{ matrix.directory }}
+      - if: matrix.directory == 'languages/javascript-playwright'
+        run: npm run check
+        working-directory: ${{ matrix.directory }}
+      - if: matrix.directory == 'languages/typescript-puppeteer'
+        run: npm run build
+        working-directory: ${{ matrix.directory }}
+
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python -m compileall -q languages/python-playwright languages/scrapy-playwright howtos agents/browser-use agents/openai-agents
+
+  scrapy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: languages/scrapy-playwright
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: pip
+          cache-dependency-path: languages/scrapy-playwright/requirements.txt
+      - run: python -m pip install -r requirements.txt ruff
+      - run: ZYTE_API_KEY=ci-placeholder scrapy list
+      - run: ZYTE_API_KEY=ci-placeholder scrapy check
+      - run: ruff check zyte_cdp
+
+  java:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+      - run: mvn --batch-mode --no-transfer-progress package
+        working-directory: languages/java-playwright
+
+  dotnet:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - run: dotnet build
+        working-directory: languages/csharp-playwright
+
+  shell:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # bash -n only parses its first file argument, so check one file per call.
+      - run: |
+          for script in \
+            agents/playwright-cli/demo.sh \
+            agents/playwright-cli/zyte-playwright-cli \
+            mcp/playwright/launch.sh \
+            mcp/chrome-devtools/launch.sh; do
+            bash -n "$script"
+          done
+      - run: node --check mcp/chrome-devtools/close-session.mjs
+      - run: node --check mcp/playwright/session.mjs
+      - run: node --check agents/playwright-cli/session.mjs

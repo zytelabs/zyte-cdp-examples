@@ -1,0 +1,3 @@
+browser-use==0.13.8
+playwright==1.62.0
+python-dotenv==1.2.2

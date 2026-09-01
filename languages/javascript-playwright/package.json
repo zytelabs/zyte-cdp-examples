@@ -1,0 +1,14 @@
+{
+  "name": "zyte-cdp-javascript-playwright",
+  "private": true,
+  "scripts": {
+    "start": "node index.js",
+    "check": "node --check index.js"
+  },
+  "dependencies": {
+    "playwright": "1.62.1"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

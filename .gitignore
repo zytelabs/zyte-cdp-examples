@@ -1,0 +1,16 @@
+.env
+.envrc
+.venv/
+__pycache__/
+*.pyc
+node_modules/
+dist/
+target/
+.ruff_cache/
+*.png
+*.har
+*.zip
+*.jsonl
+.playwright/
+.playwright-cli/
+.playwright-mcp/

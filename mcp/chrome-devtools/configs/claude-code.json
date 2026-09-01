@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "zyte-chrome-devtools": {
+      "type": "stdio",
+      "command": "/absolute/path/to/cdp/mcp/chrome-devtools/launch.sh",
+      "args": []
+    }
+  }
+}

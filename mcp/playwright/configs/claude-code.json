@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "zyte-playwright": {
+      "type": "stdio",
+      "command": "/absolute/path/to/cdp/mcp/playwright/launch.sh",
+      "args": []
+    }
+  }
+}

@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+: "${ZYTE_API_KEY:?Set ZYTE_API_KEY before starting Playwright CLI.}"
+
+script_dir="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+cli="$script_dir/node_modules/.bin/playwright-cli"
+
+if [[ ! -x "$cli" ]]; then
+  printf 'Playwright CLI is not installed. Run npm install in %s.\n' "$script_dir" >&2
+  exit 1
+fi
+
+basic_token="$(printf '%s:' "$ZYTE_API_KEY" | base64 | tr -d '\r\n')"
+export PLAYWRIGHT_MCP_CDP_ENDPOINT="${PLAYWRIGHT_MCP_CDP_ENDPOINT:-${ZYTE_BROWSER_ENDPOINT:-https://browser.zyte.com/?ttl=600}}"
+export PLAYWRIGHT_MCP_CDP_HEADERS="Authorization: Basic $basic_token"
+
+exec "$cli" "$@"

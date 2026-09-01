@@ -1,0 +1,19 @@
+{
+  "name": "zyte-cdp-typescript-puppeteer",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "puppeteer-core": "25.9.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.1",
+    "typescript": "7.0.2"
+  },
+  "engines": {
+    "node": ">=22.12"
+  }
+}

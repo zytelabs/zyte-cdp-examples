@@ -1,0 +1,9 @@
+{
+  "name": "zyte-playwright-mcp-launcher",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@playwright/mcp": "0.0.79",
+    "playwright-core": "1.63.0-alpha-2026-08-05"
+  }
+}

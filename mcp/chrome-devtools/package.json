@@ -1,0 +1,9 @@
+{
+  "name": "zyte-chrome-devtools-mcp-launcher",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "chrome-devtools-mcp": "1.8.0",
+    "puppeteer-core": "25.9.0"
+  }
+}
